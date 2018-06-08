@@ -42,18 +42,6 @@ namespace MyTicTacToe.ViewModels
 
         public Player CurrentPlayer { get => _currentPlayer; set => _currentPlayer = value; }
 
-        //public Player PlayerTwo
-        //{
-        //    get
-        //    {
-        //        return _playerTwo;
-        //    }
-        //    set
-        //    {
-        //        _playerTwo = value;
-        //    }
-        //}
-
         public bool IsMultiplayerSelected { get; set; }
 
         public string Grid00Sign
@@ -116,14 +104,29 @@ namespace MyTicTacToe.ViewModels
 
         public void ExecuteStartGame( object parameter )
         {
-            Console.WriteLine( $"PlayerTwo name is {PlayerTwo.Name}" );
-            Console.WriteLine( $"PlayerOne name is {PlayerOne.Name}" );
-            Console.WriteLine( $"Is multiplayer selected: {IsMultiplayerSelected}" );
+            if( !IsMultiplayerSelected ) 
+            {
+                PlayerTwo.Name = "Computer";
+            }
         }
 
         public bool CanExecuteStartGame( object parameter )
         {
-            return IsMultiplayerSelected;
+            if( !IsMultiplayerSelected )
+            {
+                if( string.IsNullOrWhiteSpace( PlayerOne.Name ) )
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if( string.IsNullOrWhiteSpace( PlayerOne.Name ) || string.IsNullOrWhiteSpace( PlayerTwo.Name ) ) 
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public void ExecuteDrawSign( object parameter )
@@ -142,7 +145,7 @@ namespace MyTicTacToe.ViewModels
                 var propertyInfo = this.GetType().GetProperty( propertyName );
                 propertyInfo.SetValue( this, "x" );
             }
-            Console.WriteLine( CurrentPlayer.Name );
+
             if (CurrentPlayer.Id == 1)
             {
                 CurrentPlayer = PlayerTwo;
