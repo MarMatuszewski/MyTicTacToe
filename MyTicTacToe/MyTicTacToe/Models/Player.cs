@@ -14,12 +14,28 @@ namespace MyTicTacToe.Models
         private int _numberOfWins;
         private Sign _playersSign;
 
-        public string Name { get => _name; set => SetProperty( ref _name, value); }
+        public string Name
+        {
+            get => _name;
+            set => SetProperty( ref _name, value);
+        }
 
-        public int Id { get => _id; set => _id = value; }
+        public int Id
+        {
+            get => _id;
+            set => _id = value;
+        }
 
-        public int NumberOfWins { get => _numberOfWins; set => _numberOfWins = value; }
+        public int NumberOfWins
+        {
+            get => _numberOfWins;
+            set => _numberOfWins = value;
+        }
 
-        public Sign PlayersSign { get => _playersSign; set => _playersSign = value; }
+        public Sign PlayersSign
+        {
+            get => _playersSign;
+            set => _playersSign = value;
+        }
     }
 }
