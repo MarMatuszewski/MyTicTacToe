@@ -83,78 +83,78 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Name="Grid00" Grid.Column="0" Grid.Row="0" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid00Sign}">
+                <TextBlock Name="TopLeftCorner" Grid.Column="0" Grid.Row="0" 
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding TopLeftCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid00}"/>
+                                      CommandParameter="{Binding Name, ElementName=TopLeftCorner}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
-                <TextBlock Name="Grid01" Grid.Column="0" Grid.Row="1" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid01Sign}">
+                <TextBlock Name="LeftEdge" Grid.Column="0" Grid.Row="1" 
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding LeftEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid01}"/>
+                                      CommandParameter="{Binding Name, ElementName=LeftEdge}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
-                <TextBlock Name="Grid02" Grid.Column="0" Grid.Row="2" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid02Sign}">
+                <TextBlock Name="BottomLeftCorner" Grid.Column="0" Grid.Row="2" 
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding BottomLeftCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid02}"/>
+                                      CommandParameter="{Binding Name, ElementName=BottomLeftCorner}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
 
-                <TextBlock Name="Grid10" Grid.Column="1" Grid.Row="0"
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid10Sign}">
+                <TextBlock Name="TopEdge" Grid.Column="1" Grid.Row="0"
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding TopEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid10}"/>
+                                      CommandParameter="{Binding Name, ElementName=TopEdge}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
-                <TextBlock Name="Grid11" Grid.Column="1" Grid.Row="1" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid11Sign}">
+                <TextBlock Name="Center" Grid.Column="1" Grid.Row="1" 
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Center}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid11}"/>
+                                      CommandParameter="{Binding Name, ElementName=Center}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
-                <TextBlock Name="Grid12" Grid.Column="1" Grid.Row="2" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid12Sign}">
+                <TextBlock Name="BottomEdge" Grid.Column="1" Grid.Row="2" 
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding BottomEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid12}"/>
+                                      CommandParameter="{Binding Name, ElementName=BottomEdge}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
 
-                <TextBlock Name="Grid20" Grid.Column="2" Grid.Row="0" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid20Sign}">
+                <TextBlock Name="TopRightCorner" Grid.Column="2" Grid.Row="0" 
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding TopRightCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
-                                      CommandParameter="{Binding Name, ElementName=Grid20}"/>
+                                      CommandParameter="{Binding Name, ElementName=TopRightCorner}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
-                <TextBlock Name="Grid21" Grid.Column="2" Grid.Row="1"       
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid21Sign}">
+                <TextBlock Name="RightEdge" Grid.Column="2" Grid.Row="1"       
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding RightEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick"
-                                      CommandParameter="{Binding Name, ElementName=Grid21}"/>
+                                      CommandParameter="{Binding Name, ElementName=RightEdge}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
-                <TextBlock Name="Grid22" Grid.Column="2" Grid.Row="2"        
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Grid22Sign}">
+                <TextBlock Name="BottomRightCorner" Grid.Column="2" Grid.Row="2"        
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding BottomRightCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick"
-                                      CommandParameter="{Binding Name, ElementName=Grid22}"/>
+                                      CommandParameter="{Binding Name, ElementName=BottomRightCorner}"/>
                     </TextBlock.InputBindings>
                 </TextBlock>
 

@@ -76,5 +76,6 @@ namespace MyTicTacToe.Models
                 CurrentPlayer = GamePlayerOne;
             }
         }
+
     }
 }

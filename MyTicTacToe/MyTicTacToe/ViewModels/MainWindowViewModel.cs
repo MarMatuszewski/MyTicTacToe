@@ -17,16 +17,17 @@ namespace MyTicTacToe.ViewModels
         private Player _playerOne;
         private Player _playerTwo;
         private Game _currentGame;
+        private int _currentGameNumber = 0;
         
-        private string _grid00Sign;
-        private string _grid01Sign;
-        private string _grid02Sign;
-        private string _grid10Sign;
-        private string _grid11Sign;
-        private string _grid12Sign;
-        private string _grid20Sign;
-        private string _grid21Sign;
-        private string _grid22Sign;
+        private string _topLeftCorner;
+        private string _leftEdge;
+        private string _bottomLeftCorner;
+        private string _topEdge;
+        private string _center;
+        private string _bottomEdge;
+        private string _topRightCorner;
+        private string _rightEdge;
+        private string _bottomRightCorner;
 
         public Player PlayerOne
         {
@@ -47,58 +48,58 @@ namespace MyTicTacToe.ViewModels
 
         public bool IsMultiplayerSelected { get; set; }
 
-        public string Grid00Sign
+        public string TopLeftCorner
         {
-            get => _grid00Sign;
-            set => SetProperty( ref _grid00Sign, value );
+            get => _topLeftCorner;
+            set => SetProperty( ref _topLeftCorner, value );
         }
 
-        public string Grid01Sign
+        public string LeftEdge
         {
-            get => _grid01Sign;
-            set => SetProperty( ref _grid01Sign, value );
+            get => _leftEdge;
+            set => SetProperty( ref _leftEdge, value );
         }
 
-        public string Grid02Sign
+        public string BottomLeftCorner
         {
-            get => _grid02Sign;
-            set => SetProperty( ref _grid02Sign, value );
+            get => _bottomLeftCorner;
+            set => SetProperty( ref _bottomLeftCorner, value );
         }
 
-        public string Grid10Sign
+        public string TopEdge
         {
-            get => _grid10Sign;
-            set => SetProperty( ref _grid10Sign, value );
+            get => _topEdge;
+            set => SetProperty( ref _topEdge, value );
         }
 
-        public string Grid11Sign
+        public string Center
         {
-            get => _grid11Sign;
-            set => SetProperty( ref _grid11Sign, value );
+            get => _center;
+            set => SetProperty( ref _center, value );
         }
 
-        public string Grid12Sign
+        public string BottomEdge
         {
-            get => _grid12Sign;
-            set => SetProperty( ref _grid12Sign, value );
+            get => _bottomEdge;
+            set => SetProperty( ref _bottomEdge, value );
         }
 
-        public string Grid20Sign
+        public string TopRightCorner
         {
-            get => _grid20Sign;
-            set => SetProperty( ref _grid20Sign, value );
+            get => _topRightCorner;
+            set => SetProperty( ref _topRightCorner, value );
         }
 
-        public string Grid21Sign
+        public string RightEdge
         {
-            get => _grid21Sign;
-            set => SetProperty( ref _grid21Sign, value );
+            get => _rightEdge;
+            set => SetProperty( ref _rightEdge, value );
         }
 
-        public string Grid22Sign
+        public string BottomRightCorner
         {
-            get => _grid22Sign;
-            set => SetProperty( ref _grid22Sign, value );
+            get => _bottomRightCorner;
+            set => SetProperty( ref _bottomRightCorner, value );
         }
 
         public RelayCommand StartGameCommand { get; private set; }
@@ -123,8 +124,10 @@ namespace MyTicTacToe.ViewModels
                 PlayerTwo.Name = "Computer";
             }
 
+            _currentGameNumber++;
+
             CurrentGame = new Game(
-                1,
+                _currentGameNumber,
                 PlayerOne,
                 PlayerTwo );
         }
@@ -153,7 +156,7 @@ namespace MyTicTacToe.ViewModels
             PropertyInfo propertyInfo;
 
             var parameterName = parameter.ToString();
-            var propertyName = $"{parameterName}Sign";
+            var propertyName = $"{parameterName}";
 
 
             if( CurrentGame.CurrentPlayer.PlayersSign == Sign.Noughts )
@@ -175,7 +178,7 @@ namespace MyTicTacToe.ViewModels
         private bool CanExecuteDrawSign( object parameter )
         {
             var parameterName = parameter.ToString();
-            var propertyName = $"{parameterName}Sign";
+            var propertyName = $"{parameterName}";
             var propertyInfo = this.GetType().GetProperty( propertyName );
             if( propertyInfo.GetValue( this ) == null && CurrentGame.Id != 0 )
             {
