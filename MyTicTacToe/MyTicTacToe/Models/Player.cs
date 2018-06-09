@@ -14,17 +14,7 @@ namespace MyTicTacToe.Models
         private int _numberOfWins;
         private Sign _playersSign;
 
-        public string Name {
-            get
-            {
-                return _name;
-            }
-            set
-            {
-                _name = value;
-                RaisPropertyChangedEvent( "Name" );
-            }
-        }
+        public string Name { get => _name; set => SetProperty( ref _name, value); }
 
         public int Id { get => _id; set => _id = value; }
 

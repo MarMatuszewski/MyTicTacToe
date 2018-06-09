@@ -26,21 +26,22 @@ namespace MyTicTacToe.ViewModels
         private string _grid21Sign;
         private string _grid22Sign;
 
-
-        public MainWindowViewModel()
+        public Player PlayerOne
         {
-            PlayerOne = new Player { Id = 1, PlayersSign = Sign.Crosses };
-            PlayerTwo = new Player { Id = 2, PlayersSign = Sign.Noughts };
-            StartGameCommand = new RelayCommand( ExecuteStartGame, CanExecuteStartGame );
-            DrawSignCommand = new RelayCommand( ExecuteDrawSign, CanExecuteDrawSign );
-            _currentPlayer = PlayerOne;
+            get => _playerOne;
+            set => _playerOne = value;
         }
 
-        public Player PlayerOne { get => _playerOne; set => _playerOne = value; }
+        public Player PlayerTwo {
+            get => _playerTwo;
+            set => _playerTwo = value;
+        }
 
-        public Player PlayerTwo { get => _playerTwo; set => _playerTwo = value; }
-
-        public Player CurrentPlayer { get => _currentPlayer; set => _currentPlayer = value; }
+        public Player CurrentPlayer
+        {
+            get => _currentPlayer;
+            set =>  _currentPlayer = value;
+        }
 
         public bool IsMultiplayerSelected { get; set; }
 
@@ -101,8 +102,17 @@ namespace MyTicTacToe.ViewModels
         public RelayCommand StartGameCommand { get; private set; }
         public RelayCommand DrawSignCommand { get; private set; }
 
+        public MainWindowViewModel()
+        {
+            PlayerOne = new Player { Id = 1, PlayersSign = Sign.Crosses };
+            PlayerTwo = new Player { Id = 2, PlayersSign = Sign.Noughts };
+            StartGameCommand = new RelayCommand( ExecuteStartGame, CanExecuteStartGame );
+            DrawSignCommand = new RelayCommand( ExecuteDrawSign, CanExecuteDrawSign );
+            _currentPlayer = PlayerOne;
+        }
 
-        public void ExecuteStartGame( object parameter )
+
+        private void ExecuteStartGame( object parameter )
         {
             if( !IsMultiplayerSelected ) 
             {
@@ -110,7 +120,7 @@ namespace MyTicTacToe.ViewModels
             }
         }
 
-        public bool CanExecuteStartGame( object parameter )
+        private bool CanExecuteStartGame( object parameter )
         {
             if( !IsMultiplayerSelected )
             {
@@ -129,7 +139,7 @@ namespace MyTicTacToe.ViewModels
             return true;
         }
 
-        public void ExecuteDrawSign( object parameter )
+        private void ExecuteDrawSign( object parameter )
         {
             var parameterName = parameter.ToString();
             var propertyName = $"{parameterName}Sign";
@@ -146,7 +156,12 @@ namespace MyTicTacToe.ViewModels
                 propertyInfo.SetValue( this, "x" );
             }
 
-            if (CurrentPlayer.Id == 1)
+            changePlayer();
+        }
+
+        private void changePlayer()
+        {
+            if( CurrentPlayer.Id == 1 )
             {
                 CurrentPlayer = PlayerTwo;
             }
@@ -154,6 +169,8 @@ namespace MyTicTacToe.ViewModels
             {
                 CurrentPlayer = PlayerOne;
             }
+
+            RaisePropertyChangedEvent( "CurrentPlayer" );
         }
 
         private bool CanExecuteDrawSign( object parameter )
@@ -166,14 +183,6 @@ namespace MyTicTacToe.ViewModels
                 return true;
             }
             return false;
-        }
-
-        private void SetProperty( ref string fieldName, string value, [CallerMemberName] string propertyName = null )
-        {
-            if( object.Equals( fieldName, value ) ) return;
-
-            fieldName = value;
-            RaisPropertyChangedEvent( propertyName );
         }
     }
 }
