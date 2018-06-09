@@ -84,7 +84,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="TopLeftCorner" Grid.Column="0" Grid.Row="0" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding TopLeftCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.TopLeftCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -92,7 +92,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="LeftEdge" Grid.Column="0" Grid.Row="1" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding LeftEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.LeftEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -100,7 +100,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="BottomLeftCorner" Grid.Column="0" Grid.Row="2" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding BottomLeftCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.BottomLeftCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -109,7 +109,7 @@
                 </TextBlock>
 
                 <TextBlock Name="TopEdge" Grid.Column="1" Grid.Row="0"
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding TopEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.TopEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -117,7 +117,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="Center" Grid.Column="1" Grid.Row="1" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding Center}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.Center}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -125,7 +125,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="BottomEdge" Grid.Column="1" Grid.Row="2" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding BottomEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.BottomEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -134,7 +134,7 @@
                 </TextBlock>
 
                 <TextBlock Name="TopRightCorner" Grid.Column="2" Grid.Row="0" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding TopRightCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.TopRightCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -142,7 +142,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="RightEdge" Grid.Column="2" Grid.Row="1"       
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding RightEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.RightEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick"
@@ -150,7 +150,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="BottomRightCorner" Grid.Column="2" Grid.Row="2"        
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding BottomRightCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.BottomRightCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick"
