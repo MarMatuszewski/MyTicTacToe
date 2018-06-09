@@ -29,7 +29,7 @@ namespace MyTicTacToe.Models
         public int NumberOfWins
         {
             get => _numberOfWins;
-            set => _numberOfWins = value;
+            set => SetProperty( ref _numberOfWins, value);
         }
 
         public Sign PlayersSign
