@@ -18,7 +18,7 @@ namespace MyTicTacToe.Shared
         }
 
 
-        protected void SetProperty( ref string fieldName, string value, [CallerMemberName] string propertyName = null )
+        protected void SetProperty<T>( ref T fieldName, T value, [CallerMemberName] string propertyName = null )
         {
             if( object.Equals( fieldName, value ) )
             {

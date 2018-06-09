@@ -11,6 +11,8 @@ namespace MyTicTacToe.Models
     {
         private Player _playerOne;
         private Player _playerTwo;
+        private Player _currentPlayer;
+
         private int _id;
 
         public int Id
@@ -31,19 +33,48 @@ namespace MyTicTacToe.Models
             set => _playerTwo = value;
         }
 
+        public Player CurrentPlayer
+        {
+            get => _currentPlayer;
+            set => SetProperty( ref _currentPlayer, value );
+        }
+
 
         public Game(
             int id,
             Player playerOne,
             Player playerTwo )
         {
-            _id = id;
-            _playerOne = playerOne;
-            _playerTwo = playerTwo;
+            Id = id;
+            GamePlayerOne = playerOne;
+            GamePlayerTwo = playerTwo;
+            CurrentPlayer = ChooseFirstPlayer();
         }
 
         public Game()
         {
+        }
+
+        public Player ChooseFirstPlayer()
+        {
+            if( Id % 2 == 0)
+            {
+                return GamePlayerTwo;
+            }
+
+            return GamePlayerOne;
+        }
+
+        public void ChangePlayer()
+        {
+            if( CurrentPlayer.Id == 1 )
+            {
+                CurrentPlayer = GamePlayerTwo;
+            }
+            else
+            {
+                CurrentPlayer = GamePlayerOne;
+            }
         }
     }
 }

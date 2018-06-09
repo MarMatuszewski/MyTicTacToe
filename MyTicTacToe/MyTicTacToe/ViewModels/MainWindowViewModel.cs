@@ -8,6 +8,7 @@ using MyTicTacToe.Models;
 using System.Windows.Input;
 using MyTicTacToe.Commands;
 using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace MyTicTacToe.ViewModels
 {
@@ -15,8 +16,8 @@ namespace MyTicTacToe.ViewModels
     {
         private Player _playerOne;
         private Player _playerTwo;
-        private Player _currentPlayer;
         private Game _currentGame;
+        
         private string _grid00Sign;
         private string _grid01Sign;
         private string _grid02Sign;
@@ -38,16 +39,10 @@ namespace MyTicTacToe.ViewModels
             set => _playerTwo = value;
         }
 
-        public Player CurrentPlayer
-        {
-            get => _currentPlayer;
-            set =>  _currentPlayer = value;
-        }
-
         public Game CurrentGame
         {
             get => _currentGame;
-            set => _currentGame = value;
+            set => SetProperty( ref _currentGame, value );
         }
 
         public bool IsMultiplayerSelected { get; set; }
@@ -113,10 +108,11 @@ namespace MyTicTacToe.ViewModels
         {
             PlayerOne = new Player { Id = 1, PlayersSign = Sign.Crosses };
             PlayerTwo = new Player { Id = 2, PlayersSign = Sign.Noughts };
+
             StartGameCommand = new RelayCommand( ExecuteStartGame, CanExecuteStartGame );
             DrawSignCommand = new RelayCommand( ExecuteDrawSign, CanExecuteDrawSign );
-            _currentPlayer = PlayerOne;
-            _currentGame = new Game();
+            
+            CurrentGame = new Game();
         }
 
 
@@ -127,7 +123,7 @@ namespace MyTicTacToe.ViewModels
                 PlayerTwo.Name = "Computer";
             }
 
-            _currentGame = new Game(
+            CurrentGame = new Game(
                 1,
                 PlayerOne,
                 PlayerTwo );
@@ -154,37 +150,27 @@ namespace MyTicTacToe.ViewModels
 
         private void ExecuteDrawSign( object parameter )
         {
+            PropertyInfo propertyInfo;
+
             var parameterName = parameter.ToString();
             var propertyName = $"{parameterName}Sign";
 
 
-            if( CurrentPlayer.PlayersSign == Sign.Noughts )
+            if( CurrentGame.CurrentPlayer.PlayersSign == Sign.Noughts )
             {
-                var propertyInfo = this.GetType().GetProperty( propertyName );
+                propertyInfo = this.GetType().GetProperty( propertyName );
                 propertyInfo.SetValue( this, "o" );
             }
             else
             {
-                var propertyInfo = this.GetType().GetProperty( propertyName );
+                propertyInfo = this.GetType().GetProperty( propertyName );
                 propertyInfo.SetValue( this, "x" );
             }
 
-            changePlayer();
+            CurrentGame.ChangePlayer();
         }
 
-        private void changePlayer()
-        {
-            if( CurrentPlayer.Id == 1 )
-            {
-                CurrentPlayer = PlayerTwo;
-            }
-            else
-            {
-                CurrentPlayer = PlayerOne;
-            }
 
-            RaisePropertyChangedEvent( "CurrentPlayer" );
-        }
 
         private bool CanExecuteDrawSign( object parameter )
         {

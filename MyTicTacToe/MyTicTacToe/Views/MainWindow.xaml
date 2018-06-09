@@ -49,7 +49,7 @@
                 <StackPanel Orientation="Vertical" Margin="0,60">
                     <Button Command="{Binding StartGameCommand}" Name="StartGame" Width="60" Height="20" Content="Start!" />
                     <TextBlock Name="Duration" Text="00:04:58" TextAlignment="Center" Margin="5" />
-                    <TextBlock Name="PlayerTurn" Text="{Binding CurrentPlayer.Name, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Margin="5" />
+                    <TextBlock Name="PlayerTurn" Text="{Binding CurrentGame.CurrentPlayer.Name, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Margin="5" />
                 </StackPanel>
             </StackPanel>
             <Grid Width="300" Height="300" ShowGridLines="True" Margin="10,0,0,0">
