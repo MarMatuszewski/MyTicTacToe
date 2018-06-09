@@ -31,5 +31,19 @@ namespace MyTicTacToe.Models
             set => _playerTwo = value;
         }
 
+
+        public Game(
+            int id,
+            Player playerOne,
+            Player playerTwo )
+        {
+            _id = id;
+            _playerOne = playerOne;
+            _playerTwo = playerTwo;
+        }
+
+        public Game()
+        {
+        }
     }
 }

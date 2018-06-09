@@ -16,6 +16,7 @@ namespace MyTicTacToe.ViewModels
         private Player _playerOne;
         private Player _playerTwo;
         private Player _currentPlayer;
+        private Game _currentGame;
         private string _grid00Sign;
         private string _grid01Sign;
         private string _grid02Sign;
@@ -41,6 +42,12 @@ namespace MyTicTacToe.ViewModels
         {
             get => _currentPlayer;
             set =>  _currentPlayer = value;
+        }
+
+        public Game CurrentGame
+        {
+            get => _currentGame;
+            set => _currentGame = value;
         }
 
         public bool IsMultiplayerSelected { get; set; }
@@ -109,6 +116,7 @@ namespace MyTicTacToe.ViewModels
             StartGameCommand = new RelayCommand( ExecuteStartGame, CanExecuteStartGame );
             DrawSignCommand = new RelayCommand( ExecuteDrawSign, CanExecuteDrawSign );
             _currentPlayer = PlayerOne;
+            _currentGame = new Game();
         }
 
 
@@ -118,6 +126,11 @@ namespace MyTicTacToe.ViewModels
             {
                 PlayerTwo.Name = "Computer";
             }
+
+            _currentGame = new Game(
+                1,
+                PlayerOne,
+                PlayerTwo );
         }
 
         private bool CanExecuteStartGame( object parameter )
@@ -178,7 +191,7 @@ namespace MyTicTacToe.ViewModels
             var parameterName = parameter.ToString();
             var propertyName = $"{parameterName}Sign";
             var propertyInfo = this.GetType().GetProperty( propertyName );
-            if( propertyInfo.GetValue( this ) == null )
+            if( propertyInfo.GetValue( this ) == null && CurrentGame.Id != 0 )
             {
                 return true;
             }
