@@ -12,7 +12,8 @@ namespace MyTicTacToe.Models
         private string _name;
         private int _id;
         private int _numberOfWins;
-        private Sign _playersSign;
+        private string _playersSign;
+        private int _draws;
 
         public string Name
         {
@@ -26,13 +27,19 @@ namespace MyTicTacToe.Models
             set => _id = value;
         }
 
+        public int Draws
+        {
+            get => _draws;
+            set => SetProperty( ref _draws, value );
+        }
+
         public int NumberOfWins
         {
             get => _numberOfWins;
             set => SetProperty( ref _numberOfWins, value);
         }
 
-        public Sign PlayersSign
+        public string PlayersSign
         {
             get => _playersSign;
             set => _playersSign = value;

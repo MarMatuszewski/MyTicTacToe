@@ -14,12 +14,13 @@ namespace MyTicTacToe.ViewModels
 {
     public class MainWindowViewModel : ObservableObject
     {
+        private const string Nought = "o";
+        private const string Cross = "x";
+
         private Player _playerOne;
         private Player _playerTwo;
         private Game _currentGame;
         private int _currentGameNumber = 0;
-        
-
 
         public Player PlayerOne
         {
@@ -40,15 +41,13 @@ namespace MyTicTacToe.ViewModels
 
         public bool IsMultiplayerSelected { get; set; }
 
-
-
         public RelayCommand StartGameCommand { get; private set; }
         public RelayCommand DrawSignCommand { get; private set; }
 
         public MainWindowViewModel()
         {
-            PlayerOne = new Player { Id = 1, PlayersSign = Sign.Crosses };
-            PlayerTwo = new Player { Id = 2, PlayersSign = Sign.Noughts };
+            PlayerOne = new Player { Id = 1, PlayersSign = Cross };
+            PlayerTwo = new Player { Id = 2, PlayersSign = Nought };
 
             StartGameCommand = new RelayCommand( ExecuteStartGame, CanExecuteStartGame );
             DrawSignCommand = new RelayCommand( ExecuteDrawSign, CanExecuteDrawSign );
@@ -74,7 +73,11 @@ namespace MyTicTacToe.ViewModels
 
         private bool CanExecuteStartGame( object parameter )
         {
-            if( !IsMultiplayerSelected )
+            if( CurrentGame.IsGameInProgress ) 
+            {
+                return false;
+            }
+            else if( !IsMultiplayerSelected )
             {
                 if( string.IsNullOrWhiteSpace( PlayerOne.Name ) )
                 {

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyTicTacToe.ViewModels"
+        WindowStartupLocation="CenterScreen"
         
     mc:Ignorable="d"
         Title="TicTac" Height="350" Width="525">
@@ -50,8 +51,8 @@
                              Width="110" Height="Auto" Margin="0,5,0,5"/>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,40">
-                    <Button Command="{Binding StartGameCommand}" Name="StartGame" Width="60" Height="20" Content="Start!" />
-                    <TextBlock Name="Duration" Text="00:04:58" TextAlignment="Center" Margin="5" />
+                    <Button Command="{Binding StartGameCommand}" Name="StartGame" Width="70" Height="20" Content="Start Game!" />
+                    <TextBlock Name="Duration" Text="" TextAlignment="Center" Margin="5" />
                     <TextBlock Name="PlayerTurn" Text="{Binding CurrentGame.CurrentPlayer.Name, UpdateSourceTrigger=PropertyChanged}" 
                                TextAlignment="Center" Margin="5" />
                 </StackPanel>
@@ -63,7 +64,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="Draw" TextAlignment="Center" Width="60"/>
-                        <TextBlock Text="0" TextAlignment="Center" Margin="5"/>
+                        <TextBlock Text="{Binding PlayerOne.Draws}" TextAlignment="Center" Margin="5"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding PlayerTwo.Name}" TextAlignment="Center" Width="60"/>
