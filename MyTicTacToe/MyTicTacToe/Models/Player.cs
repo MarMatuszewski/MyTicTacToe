@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyTicTacToe.Shared;
+using Prism.Mvvm;
 
 namespace MyTicTacToe.Models
 {
-    public class Player : ObservableObject
+    public class Player : BindableBase
     {
         private string _name;
         private int _id;

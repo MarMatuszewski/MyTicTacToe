@@ -9,10 +9,11 @@ using System.Windows.Input;
 using MyTicTacToe.Commands;
 using System.Runtime.CompilerServices;
 using System.Reflection;
+using Prism.Mvvm;
 
 namespace MyTicTacToe.ViewModels
 {
-    public class MainWindowViewModel : ObservableObject
+    public class MainWindowViewModel : BindableBase
     {
         private const string Nought = "o";
         private const string Cross = "x";

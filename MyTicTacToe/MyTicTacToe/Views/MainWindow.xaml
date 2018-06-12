@@ -52,7 +52,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="0,40">
                     <Button Command="{Binding StartGameCommand}" Name="StartGame" Width="70" Height="20" Content="Start Game!" />
-                    <TextBlock Name="Duration" Text="" TextAlignment="Center" Margin="5" />
+                    <TextBlock Text="Players turn:" TextAlignment="Center" Margin="5" />
                     <TextBlock Name="PlayerTurn" Text="{Binding CurrentGame.CurrentPlayer.Name, UpdateSourceTrigger=PropertyChanged}" 
                                TextAlignment="Center" Margin="5" />
                 </StackPanel>

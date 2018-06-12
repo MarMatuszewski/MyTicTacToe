@@ -1,4 +1,6 @@
 ﻿using MyTicTacToe.Shared;
+using MyTicTacToe.Views;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ using System.Windows;
 
 namespace MyTicTacToe.Models
 {
-    public class Game : ObservableObject
+    public class Game : BindableBase
     {
         private Player _playerOne;
         private Player _playerTwo;
