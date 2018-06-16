@@ -32,7 +32,7 @@ namespace MyTicTacToe.Models
         private string _rightEdge = string.Empty;
         private string _bottomRightCorner = string.Empty;
 
-
+        private Dictionary<string, List<string>> possibleWinningLines;
 
         public int Id
         {
@@ -139,6 +139,18 @@ namespace MyTicTacToe.Models
             GamePlayerTwo = playerTwo;
             CurrentPlayer = ChooseFirstPlayer();
             IsGameInProgress = true;
+
+            possibleWinningLines = new Dictionary<string, List<string>>
+            {
+                { "LeftColumn", new List<string> { "TopLeftCorner", "LeftEdge", "BottomLeftCorner" } },
+                { "CenterColumn", new List<string> { "TopEdge", "Center", "BottomEdge" } },
+                { "RightColumn", new List<string> { "TopRightCorner", "RightEdge", "BottomRightCorner" } },
+                { "TopRow", new List<string> { "TopLeftCorner", "TopEdge", "TopRightCorner" } },
+                { "CenterRow", new List<string> { "LeftEdge", "Center", "RightEdge" } },
+                { "BottomRow", new List<string> { "BottomLeftCorner", "BottomEdge", "BottomRightCorner" } },
+                { "LeftToRightDiagonal", new List<string> { "TopLeftCorner", "Center", "BottomRightCorner" } },
+                { "RightToLeftDiagonal", new List<string> { "TopRightCorner", "Center", "BottomLeftCorner" } }
+            };
         }
 
         public Player ChooseFirstPlayer()
@@ -191,63 +203,17 @@ namespace MyTicTacToe.Models
                 return;
             }
 
-            if( TopLeftCorner.Equals( CurrentPlayer.PlayersSign )
-                && LeftEdge.Equals( CurrentPlayer.PlayersSign )
-                && BottomLeftCorner.Equals( CurrentPlayer.PlayersSign ) )
+            foreach( var line in possibleWinningLines )
             {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
+                if( line.Value.All( 
+                    prop => GetType().GetProperty( prop ).GetValue( this ).Equals( CurrentPlayer.PlayersSign ) ) )
+                {
+                    displayMessageAndEndGame( CurrentPlayer );
+                    return;
+                }
             }
-            else if( TopLeftCorner.Equals( CurrentPlayer.PlayersSign )
-                     && TopEdge.Equals( CurrentPlayer.PlayersSign )
-                     && TopRightCorner.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( TopLeftCorner.Equals( CurrentPlayer.PlayersSign )
-                     && Center.Equals( CurrentPlayer.PlayersSign )
-                     && BottomRightCorner.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( LeftEdge.Equals( CurrentPlayer.PlayersSign )
-                     && Center.Equals( CurrentPlayer.PlayersSign )
-                     && RightEdge.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( BottomLeftCorner.Equals( CurrentPlayer.PlayersSign )
-                     && BottomEdge.Equals( CurrentPlayer.PlayersSign )
-                     && BottomRightCorner.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( BottomLeftCorner.Equals( CurrentPlayer.PlayersSign )
-                     && Center.Equals( CurrentPlayer.PlayersSign )
-                     && TopRightCorner.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( TopEdge.Equals( CurrentPlayer.PlayersSign )
-                     && Center.Equals( CurrentPlayer.PlayersSign )
-                     && BottomEdge.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( BottomRightCorner.Equals( CurrentPlayer.PlayersSign )
-                     && RightEdge.Equals( CurrentPlayer.PlayersSign )
-                     && TopRightCorner.Equals( CurrentPlayer.PlayersSign ) )
-            {
-                displayMessageAndEndGame( CurrentPlayer );
-                return;
-            }
-            else if( NumberOfMoves == 9 )
+          
+            if( NumberOfMoves == 9 )
             {
                 displayMessageAndEndGame();
                 return;
