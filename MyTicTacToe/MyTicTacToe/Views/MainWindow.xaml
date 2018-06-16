@@ -64,7 +64,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="Draw" TextAlignment="Center" Width="60"/>
-                        <TextBlock Text="{Binding PlayerOne.Draws}" TextAlignment="Center" Margin="5"/>
+                        <TextBlock Text="{Binding PlayerOne.Draws, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Margin="5"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding PlayerTwo.Name}" TextAlignment="Center" Width="60"/>

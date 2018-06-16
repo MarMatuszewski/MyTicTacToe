@@ -190,68 +190,66 @@ namespace MyTicTacToe.Models
                 ChangePlayer();
                 return;
             }
+
             if( TopLeftCorner.Equals( CurrentPlayer.PlayersSign )
                 && LeftEdge.Equals( CurrentPlayer.PlayersSign )
                 && BottomLeftCorner.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( TopLeftCorner.Equals( CurrentPlayer.PlayersSign )
                      && TopEdge.Equals( CurrentPlayer.PlayersSign )
                      && TopRightCorner.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( TopLeftCorner.Equals( CurrentPlayer.PlayersSign )
                      && Center.Equals( CurrentPlayer.PlayersSign )
                      && BottomRightCorner.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( LeftEdge.Equals( CurrentPlayer.PlayersSign )
                      && Center.Equals( CurrentPlayer.PlayersSign )
                      && RightEdge.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( BottomLeftCorner.Equals( CurrentPlayer.PlayersSign )
                      && BottomEdge.Equals( CurrentPlayer.PlayersSign )
                      && BottomRightCorner.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( BottomLeftCorner.Equals( CurrentPlayer.PlayersSign )
                      && Center.Equals( CurrentPlayer.PlayersSign )
                      && TopRightCorner.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( TopEdge.Equals( CurrentPlayer.PlayersSign )
                      && Center.Equals( CurrentPlayer.PlayersSign )
                      && BottomEdge.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( BottomRightCorner.Equals( CurrentPlayer.PlayersSign )
                      && RightEdge.Equals( CurrentPlayer.PlayersSign )
                      && TopRightCorner.Equals( CurrentPlayer.PlayersSign ) )
             {
-                displayWinnerMessageAndEndGame();
+                displayMessageAndEndGame( CurrentPlayer );
                 return;
             }
             else if( NumberOfMoves == 9 )
             {
-                MessageBox.Show( $"Draw!!" );
-                GamePlayerOne.Draws++;
-                IsGameInProgress = false;
-                clearAllGridFields();
+                displayMessageAndEndGame();
                 return;
             }
             ChangePlayer();
@@ -271,12 +269,21 @@ namespace MyTicTacToe.Models
             }
         }
 
-        private void displayWinnerMessageAndEndGame()
+        private void displayMessageAndEndGame( Player winner = null )
         {
-            MessageBox.Show( $"Congratulation {CurrentPlayer.Name} won!!" );
-            CurrentPlayer.NumberOfWins++;
+            var message = winner != null ? 
+                $"Congratulation {winner.Name} won!!" 
+                : "Draw!!";
+
+            MessageBox.Show( message, "End of game", MessageBoxButton.OK );
+
+            var increase = winner != null ? 
+                CurrentPlayer.NumberOfWins++ 
+                : GamePlayerOne.Draws++;
+            
             IsGameInProgress = false;
             clearAllGridFields();
+            CurrentPlayer = null;
         }
     }
 }
