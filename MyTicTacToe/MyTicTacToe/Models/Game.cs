@@ -1,17 +1,13 @@
-﻿using MyTicTacToe.Shared;
-using MyTicTacToe.Views;
+﻿using MyTicTacToe.Interfaces;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace MyTicTacToe.Models
 {
-    public class Game : BindableBase
+    public class Game : BindableBase, IGame
     {
         private Player _playerOne;
         private Player _playerTwo;
@@ -19,6 +15,7 @@ namespace MyTicTacToe.Models
 
         private int _id;
         private int _numberOfMoves;
+        private int _draws;
 
         private bool _gameInProgress;
 
@@ -40,6 +37,11 @@ namespace MyTicTacToe.Models
             set => _id = value;
         }
 
+        public int Draws
+        {
+            get => _draws;
+            set => SetProperty( ref _draws, value );
+        }
 
         public int NumberOfMoves
         {
@@ -127,19 +129,6 @@ namespace MyTicTacToe.Models
 
         public Game()
         {
-        }
-
-        public Game(
-            int id,
-            Player playerOne,
-            Player playerTwo )
-        {
-            Id = id;
-            GamePlayerOne = playerOne;
-            GamePlayerTwo = playerTwo;
-            CurrentPlayer = ChooseFirstPlayer();
-            IsGameInProgress = true;
-
             possibleWinningLines = new Dictionary<string, List<string>>
             {
                 { "LeftColumn", new List<string> { "TopLeftCorner", "LeftEdge", "BottomLeftCorner" } },
@@ -153,26 +142,13 @@ namespace MyTicTacToe.Models
             };
         }
 
-        public Player ChooseFirstPlayer()
+        public void StartGame( Player playerOne, Player playerTwo)
         {
-            if( Id % 2 == 0)
-            {
-                return GamePlayerTwo;
-            }
-
-            return GamePlayerOne;
-        }
-
-        public void ChangePlayer()
-        {
-            if( CurrentPlayer.Id == 1 )
-            {
-                CurrentPlayer = GamePlayerTwo;
-            }
-            else
-            {
-                CurrentPlayer = GamePlayerOne;
-            }
+            _id++;
+            GamePlayerOne = playerOne;
+            GamePlayerTwo = playerTwo;
+            CurrentPlayer = chooseFirstPlayer();
+            IsGameInProgress = true;
         }
 
         public void ExecuteDrawSign( object parameter )
@@ -182,7 +158,7 @@ namespace MyTicTacToe.Models
             var property = GetType().GetProperty( parameter.ToString() );
             property.SetValue( this, CurrentPlayer.PlayersSign );
 
-            CheckForWinner();
+            checkForWinner();
         }
 
         public bool CanExecuteDrawSign( object parameter )
@@ -195,11 +171,33 @@ namespace MyTicTacToe.Models
             return false;
         }
 
-        public void CheckForWinner()
+        private Player chooseFirstPlayer()
+        {
+            if( Id % 2 == 0 )
+            {
+                return GamePlayerTwo;
+            }
+
+            return GamePlayerOne;
+        }
+
+        private void changePlayer()
+        {
+            if( CurrentPlayer.Id == 1 )
+            {
+                CurrentPlayer = GamePlayerTwo;
+            }
+            else
+            {
+                CurrentPlayer = GamePlayerOne;
+            }
+        }
+
+        private void checkForWinner()
         {
             if( NumberOfMoves < 5 )
             {
-                ChangePlayer();
+                changePlayer();
                 return;
             }
 
@@ -218,7 +216,7 @@ namespace MyTicTacToe.Models
                 displayMessageAndEndGame();
                 return;
             }
-            ChangePlayer();
+            changePlayer();
         }
 
         private void clearAllGridFields()
@@ -245,11 +243,12 @@ namespace MyTicTacToe.Models
 
             var increase = winner != null ? 
                 CurrentPlayer.NumberOfWins++ 
-                : GamePlayerOne.Draws++;
+                : Draws++;
             
             IsGameInProgress = false;
             clearAllGridFields();
             CurrentPlayer = null;
+            _numberOfMoves = 0;
         }
     }
 }

@@ -62,7 +62,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="StartUp\Bootstrapper.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Interfaces\IGame.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Shared\Sign.cs" />
@@ -101,6 +103,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Ninject">
+      <Version>3.3.4</Version>
+    </PackageReference>
     <PackageReference Include="OpenCover">
       <Version>4.6.519</Version>
     </PackageReference>

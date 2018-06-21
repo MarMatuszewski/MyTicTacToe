@@ -1,10 +1,7 @@
-﻿using MyTicTacToe.ViewModels;
+﻿using MyTicTacToe.Interfaces;
+using MyTicTacToe.ViewModels;
+using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyTicTacToe.Tests.MainWindowViewModelTests
 {
@@ -15,10 +12,14 @@ namespace MyTicTacToe.Tests.MainWindowViewModelTests
         private const string CrossSign = "x";
         private const string NoughtSign = "o";
 
+        private IGame MockGame;
+
 
         public MainWindowViewModelTests()
         {
-            _viewModel = new MainWindowViewModel();
+            MockGame = Substitute.For<IGame>();
+
+            _viewModel = new MainWindowViewModel( MockGame );
         }
 
         [Test]
@@ -48,7 +49,7 @@ namespace MyTicTacToe.Tests.MainWindowViewModelTests
         [Test]
         public void StartGame_Button_Should_Be_Disabled_When_Game_Is_In_Porgress()
         {
-            _viewModel.CurrentGame.IsGameInProgress = true;
+            MockGame.IsGameInProgress.Returns( true );
 
             Assert.IsFalse( _viewModel.StartGameCommand.CanExecute( null ) );
         }
@@ -65,7 +66,7 @@ namespace MyTicTacToe.Tests.MainWindowViewModelTests
         [Test]
         public void StartGame_Button_Should_Be_Disabled_When_In_MultiPlayer_Mode_And_Player_One_Name_Is_Blank()
         {
-            _viewModel.CurrentGame.IsGameInProgress = false;
+            MockGame.IsGameInProgress.Returns( false );
             _viewModel.IsMultiplayerSelected = true;
             _viewModel.PlayerOne.Name = string.Empty;
             _viewModel.PlayerTwo.Name = "PlayerTwo";
@@ -76,7 +77,7 @@ namespace MyTicTacToe.Tests.MainWindowViewModelTests
         [Test]
         public void StartGame_Button_Should_Be_Disabled_When_In_MultiPlayer_Mode_And_Player_Two_Name_Is_Blank()
         {
-            _viewModel.CurrentGame.IsGameInProgress = false;
+            MockGame.IsGameInProgress.Returns( false );
             _viewModel.IsMultiplayerSelected = true;
             _viewModel.PlayerOne.Name = "PlayerOne";
             _viewModel.PlayerTwo.Name = string.Empty;
@@ -87,7 +88,7 @@ namespace MyTicTacToe.Tests.MainWindowViewModelTests
         [Test]
         public void StartGame_Button_Should_Be_Enabled_When_In_SinglePlayer_Mode_And_Player_One_Name_Is_Set()
         {
-            _viewModel.CurrentGame.IsGameInProgress = false;
+            MockGame.IsGameInProgress.Returns( false );
             _viewModel.IsMultiplayerSelected = false;
             _viewModel.PlayerOne.Name = "PlayerOne";
 
@@ -97,7 +98,7 @@ namespace MyTicTacToe.Tests.MainWindowViewModelTests
         [Test]
         public void StartGame_Button_Should_Be_Enabled_When_In_MultiPlayer_Mode_And_Player_One_And_Two_Names_Are_Set()
         {
-            _viewModel.CurrentGame.IsGameInProgress = false;
+            MockGame.IsGameInProgress.Returns( false );
             _viewModel.IsMultiplayerSelected = true;
             _viewModel.PlayerOne.Name = "PlayerOne";
             _viewModel.PlayerTwo.Name = "PlayerTwo";
