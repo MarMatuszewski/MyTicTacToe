@@ -8,6 +8,10 @@ namespace MyTicTacToe.Interfaces
 
         int Draws { get; set; }
 
+        Player GamePlayerOne { get; set; }
+
+        Player GamePlayerTwo { get; set; }
+
         void ExecuteDrawSign( object parameter );
 
         bool CanExecuteDrawSign( object parameter );
