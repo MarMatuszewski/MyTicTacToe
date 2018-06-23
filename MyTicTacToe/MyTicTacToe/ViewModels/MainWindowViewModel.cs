@@ -14,6 +14,11 @@ namespace MyTicTacToe.ViewModels
         private Player _playerTwo;
         private IGame _game;
 
+        public bool IsMultiplayerSelected { get; set; }
+
+        public RelayCommand StartGameCommand { get; private set; }
+        public RelayCommand DrawSignCommand { get; private set; }
+
         public Player PlayerOne
         {
             get => _playerOne;
@@ -30,11 +35,6 @@ namespace MyTicTacToe.ViewModels
             get => _game;
             set => SetProperty( ref _game, value );
         }
-
-        public bool IsMultiplayerSelected { get; set; }
-
-        public RelayCommand StartGameCommand { get; private set; }
-        public RelayCommand DrawSignCommand { get; private set; }
 
         public MainWindowViewModel(
             IGame game )

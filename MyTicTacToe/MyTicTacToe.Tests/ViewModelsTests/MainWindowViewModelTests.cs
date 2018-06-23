@@ -4,7 +4,7 @@ using MyTicTacToe.ViewModels;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace MyTicTacToe.Tests.MainWindowViewModelTests
+namespace MyTicTacToe.Tests.ViewModelTests
 {
     [TestFixture]
     public class MainWindowViewModelTests

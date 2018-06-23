@@ -142,7 +142,7 @@ namespace MyTicTacToe.Models
             };
         }
 
-        public void StartGame( Player playerOne, Player playerTwo)
+        public void StartGame( Player playerOne, Player playerTwo )
         {
             _id++;
             GamePlayerOne = playerOne;
