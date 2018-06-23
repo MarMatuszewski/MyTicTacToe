@@ -164,7 +164,7 @@ namespace MyTicTacToe.Models
         public bool CanExecuteDrawSign( object parameter )
         {
             var property = GetType().GetProperty( parameter.ToString() );
-            if( property.GetValue( this ).Equals( string.Empty ) && Id != 0 && IsGameInProgress )
+            if( property.GetValue( this ).Equals( string.Empty ) && IsGameInProgress )
             {
                 return true;
             }
