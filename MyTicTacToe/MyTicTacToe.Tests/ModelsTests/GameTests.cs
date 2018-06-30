@@ -1,4 +1,6 @@
-﻿using MyTicTacToe.Models;
+﻿using MyTicTacToe.Interfaces;
+using MyTicTacToe.Models;
+using NSubstitute;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,13 +16,16 @@ namespace MyTicTacToe.Tests.ModelsTests
         private Game SUT;
         private Player _testPlayerOne;
         private Player _testPlayerTwo;
+        private IDisplayService MockDisplayService;
 
         public GameTests()
         {
+            MockDisplayService = Substitute.For<IDisplayService>();
+
             _testPlayerOne = new Player() { Id = 1, Name = "PlayerOne", PlayersSign = "x" };
             _testPlayerTwo = new Player() { Id = 2, Name = "PlayerTwo", PlayersSign = "o" };
 
-            SUT = new Game();
+            SUT = new Game( MockDisplayService );
         }
 
         [Test]
@@ -151,7 +156,7 @@ namespace MyTicTacToe.Tests.ModelsTests
             var obj = "Center";
             SUT.StartGame( _testPlayerOne, _testPlayerTwo );
             SUT.CurrentPlayer = _testPlayerOne;
-            SUT.NumberOfMoves = 1;
+            SUT.NumberOfMoves = 6;
             SUT.ExecuteDrawSign( obj );
 
             Assert.AreSame( _testPlayerTwo, SUT.CurrentPlayer );
@@ -163,7 +168,8 @@ namespace MyTicTacToe.Tests.ModelsTests
             var obj = "Center";
             SUT.StartGame( _testPlayerOne, _testPlayerTwo );
             SUT.CurrentPlayer = _testPlayerTwo;
-            SUT.NumberOfMoves = 1;
+            SUT.NumberOfMoves = 5;
+
             SUT.ExecuteDrawSign( obj );
 
             Assert.AreSame( _testPlayerOne, SUT.CurrentPlayer );

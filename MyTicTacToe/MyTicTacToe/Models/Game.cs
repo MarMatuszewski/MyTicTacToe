@@ -29,7 +29,8 @@ namespace MyTicTacToe.Models
         private string _rightEdge = string.Empty;
         private string _bottomRightCorner = string.Empty;
 
-        private Dictionary<string, List<string>> possibleWinningLines;
+        private Dictionary<string, List<string>> _possibleWinningLines;
+        private readonly IDisplayService _displayService;
 
         public int Id
         {
@@ -127,9 +128,11 @@ namespace MyTicTacToe.Models
             set => SetProperty( ref _bottomRightCorner, value );
         }
 
-        public Game()
+        public Game( IDisplayService displayService )
         {
-            possibleWinningLines = new Dictionary<string, List<string>>
+            _displayService = displayService;
+
+            _possibleWinningLines = new Dictionary<string, List<string>>
             {
                 { "LeftColumn", new List<string> { "TopLeftCorner", "LeftEdge", "BottomLeftCorner" } },
                 { "CenterColumn", new List<string> { "TopEdge", "Center", "BottomEdge" } },
@@ -201,7 +204,7 @@ namespace MyTicTacToe.Models
                 return;
             }
 
-            foreach( var line in possibleWinningLines )
+            foreach( var line in _possibleWinningLines )
             {
                 if( line.Value.All( 
                     prop => GetType().GetProperty( prop ).GetValue( this ).Equals( CurrentPlayer.PlayersSign ) ) )
@@ -239,7 +242,7 @@ namespace MyTicTacToe.Models
                 $"Congratulation {winner.Name} won!!" 
                 : "Draw!!";
 
-            MessageBox.Show( message, "End of game", MessageBoxButton.OK );
+            _displayService.DisplayMessage( message );
 
             var increase = winner != null ? 
                 CurrentPlayer.NumberOfWins++ 

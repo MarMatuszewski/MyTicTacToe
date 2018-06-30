@@ -1,5 +1,6 @@
 ﻿using MyTicTacToe.Interfaces;
 using MyTicTacToe.Models;
+using MyTicTacToe.Shared;
 using MyTicTacToe.ViewModels;
 using MyTicTacToe.Views;
 using Ninject.Modules;
@@ -18,6 +19,9 @@ namespace MyTicTacToe.StartUp
 
             Bind<IGame>()
                 .To<Game>().InSingletonScope();
+
+            Bind<IDisplayService>()
+                .To<MessageBoxDisplayService>().InSingletonScope();
         }
     }
 }
