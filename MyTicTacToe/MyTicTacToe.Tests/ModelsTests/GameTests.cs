@@ -174,5 +174,266 @@ namespace MyTicTacToe.Tests.ModelsTests
 
             Assert.AreSame( _testPlayerOne, SUT.CurrentPlayer );
         }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Dispalyed_When_His_Sign_Will_Be_In_All_Fields_Of_LeftColumn()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "BottomLeftCorner";
+            SUT.TopLeftCorner = _testPlayerTwo.PlayersSign;
+            SUT.LeftEdge = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_CenterColumn()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "BottomEdge";
+            SUT.TopEdge = _testPlayerTwo.PlayersSign;
+            SUT.Center = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_RightColumn()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "RightEdge";
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+            SUT.BottomRightCorner= _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_TopRow()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "TopEdge";
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+            SUT.TopLeftCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_CenterRow()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "Center";
+            SUT.LeftEdge = _testPlayerTwo.PlayersSign;
+            SUT.RightEdge = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_BottomRow()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "BottomEdge";
+            SUT.BottomRightCorner = _testPlayerTwo.PlayersSign;
+            SUT.BottomLeftCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_TopLeftToBottomRightDiagonal()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "Center";
+            SUT.BottomRightCorner = _testPlayerTwo.PlayersSign;
+            SUT.TopLeftCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_Should_Be_A_Winner_And_Message_Should_Be_Displayed_When_His_Sign_Will_Be_In_All_Fields_Of_TopRightToBottomLeftDiagonal()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "Center";
+            SUT.BottomLeftCorner = _testPlayerTwo.PlayersSign;
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage(
+                Arg.Is( $"Congratulation {_testPlayerTwo.Name} won!!" ) );
+        }
+
+        [Test]
+        public void Message_Should_Be_Displayed_When_There_Is_No_Winner_And_NumberOfmoves_Equals_9()
+        {
+            MockDisplayService.ClearReceivedCalls();
+            var obj = "Center";
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 8;
+
+            SUT.ExecuteDrawSign( obj );
+
+            MockDisplayService.Received( 1 ).DisplayMessage( Arg.Is( "Draw!!" ) );
+        }
+
+        [Test]
+        public void PlayerTwo_NumberOfWins_Should_Be_1_After_His_First_Win()
+        {
+            var obj = "Center";
+            SUT.BottomLeftCorner = _testPlayerTwo.PlayersSign;
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 5;
+            _testPlayerTwo.NumberOfWins = 0;
+
+            SUT.ExecuteDrawSign( obj );
+
+            Assert.AreEqual( 1, _testPlayerTwo.NumberOfWins );
+        }
+
+        [Test]
+        public void Draws_Number_Should_Be_1_After_First_Draw()
+        {
+            var obj = "TopEdge";
+            SUT.BottomLeftCorner = _testPlayerTwo.PlayersSign;
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 8;
+            SUT.Draws = 0;
+
+            SUT.ExecuteDrawSign( obj );
+
+            Assert.AreEqual( 1, SUT.Draws );
+        }
+
+        [Test]
+        public void Game_Should_Not_Be_In_Progress_When_Game_Will_Be_Finished()
+        {
+            var obj = "TopEdge";
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 8;
+
+            SUT.ExecuteDrawSign( obj );
+
+            Assert.IsFalse( SUT.IsGameInProgress );
+        }
+
+        [Test]
+        public void All_Game_Fields_Should_Be_Empty_When_Game_Will_Be_Finished()
+        {
+            var obj = "TopEdge";
+            SUT.BottomLeftCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 8;
+
+            SUT.ExecuteDrawSign( obj );
+
+            Assert.That( SUT.TopEdge.Equals( string.Empty ) );
+            Assert.That( SUT.TopLeftCorner.Equals( string.Empty ) );
+            Assert.That( SUT.TopRightCorner.Equals( string.Empty ) );
+            Assert.That( SUT.LeftEdge.Equals( string.Empty ) );
+            Assert.That( SUT.Center.Equals( string.Empty ) );
+            Assert.That( SUT.RightEdge.Equals( string.Empty ) );
+            Assert.That( SUT.BottomEdge.Equals( string.Empty ) );
+            Assert.That( SUT.BottomLeftCorner.Equals( string.Empty ) );
+            Assert.That( SUT.BottomRightCorner.Equals( string.Empty ) );
+        }
+
+        [Test]
+        public void CurrentPlayer_Should_Be_Null_When_Game_Will_Be_Finished()
+        {
+            var obj = "TopEdge";
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 8;
+
+            SUT.ExecuteDrawSign( obj );
+
+            Assert.IsNull( SUT.CurrentPlayer );
+        }
+
+        [Test]
+        public void NumberOfMoves_Should_Be_0_When_Game_Will_Be_Finished()
+        {
+            var obj = "TopEdge";
+            SUT.TopRightCorner = _testPlayerTwo.PlayersSign;
+
+            SUT.StartGame( _testPlayerOne, _testPlayerTwo );
+            SUT.CurrentPlayer = _testPlayerTwo;
+            SUT.NumberOfMoves = 8;
+
+            SUT.ExecuteDrawSign( obj );
+
+            Assert.AreEqual( 0, SUT.NumberOfMoves );
+        }
     }
 }

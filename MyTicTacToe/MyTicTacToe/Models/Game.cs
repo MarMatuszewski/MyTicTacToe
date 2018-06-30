@@ -140,8 +140,8 @@ namespace MyTicTacToe.Models
                 { "TopRow", new List<string> { "TopLeftCorner", "TopEdge", "TopRightCorner" } },
                 { "CenterRow", new List<string> { "LeftEdge", "Center", "RightEdge" } },
                 { "BottomRow", new List<string> { "BottomLeftCorner", "BottomEdge", "BottomRightCorner" } },
-                { "LeftToRightDiagonal", new List<string> { "TopLeftCorner", "Center", "BottomRightCorner" } },
-                { "RightToLeftDiagonal", new List<string> { "TopRightCorner", "Center", "BottomLeftCorner" } }
+                { "TopLeftToBottomRightDiagonal", new List<string> { "TopLeftCorner", "Center", "BottomRightCorner" } },
+                { "TopRightToBottomLeftDiagonal", new List<string> { "TopRightCorner", "Center", "BottomLeftCorner" } }
             };
         }
 
