@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MyTicTacToe.StartUp;
+using MyTicTacToe.ViewModels;
+using MyTicTacToe.Views;
+using Ninject;
 using System.Windows;
 
 namespace MyTicTacToe
@@ -13,5 +11,22 @@ namespace MyTicTacToe
     /// </summary>
     public partial class App : Application
     {
+        private IKernel _kernel;
+
+        protected override void OnStartup( StartupEventArgs e )
+        {
+            base.OnStartup( e );
+
+            _kernel = new StandardKernel();
+            
+            _kernel.Load( new Bootstrapper() );
+
+            var mainWindow = new MainWindow
+            {
+                DataContext = _kernel.Get<MainWindowViewModel>()
+            };
+
+            mainWindow.Show();
+        }
     }
 }

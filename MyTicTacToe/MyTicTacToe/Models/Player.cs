@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyTicTacToe.Shared;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 
 namespace MyTicTacToe.Models
 {
@@ -14,7 +8,6 @@ namespace MyTicTacToe.Models
         private int _id;
         private int _numberOfWins;
         private string _playersSign;
-        private int _draws;
 
         public string Name
         {
@@ -26,12 +19,6 @@ namespace MyTicTacToe.Models
         {
             get => _id;
             set => _id = value;
-        }
-
-        public int Draws
-        {
-            get => _draws;
-            set => SetProperty( ref _draws, value );
         }
 
         public int NumberOfWins
