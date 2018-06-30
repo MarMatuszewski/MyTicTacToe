@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyTicTacToe.Shared;
-using MyTicTacToe.Models;
-using System.Windows.Input;
+﻿using MyTicTacToe.Models;
 using MyTicTacToe.Commands;
-using System.Runtime.CompilerServices;
-using System.Reflection;
 using Prism.Mvvm;
+using MyTicTacToe.Interfaces;
 
 namespace MyTicTacToe.ViewModels
 {
@@ -20,8 +12,12 @@ namespace MyTicTacToe.ViewModels
 
         private Player _playerOne;
         private Player _playerTwo;
-        private Game _currentGame;
-        private int _currentGameNumber = 0;
+        private IGame _game;
+
+        public bool IsMultiplayerSelected { get; set; }
+
+        public RelayCommand StartGameCommand { get; private set; }
+        public RelayCommand DrawSignCommand { get; private set; }
 
         public Player PlayerOne
         {
@@ -34,26 +30,22 @@ namespace MyTicTacToe.ViewModels
             set => _playerTwo = value;
         }
 
-        public Game CurrentGame
+        public IGame Game
         {
-            get => _currentGame;
-            set => SetProperty( ref _currentGame, value );
+            get => _game;
+            set => SetProperty( ref _game, value );
         }
 
-        public bool IsMultiplayerSelected { get; set; }
-
-        public RelayCommand StartGameCommand { get; private set; }
-        public RelayCommand DrawSignCommand { get; private set; }
-
-        public MainWindowViewModel()
+        public MainWindowViewModel(
+            IGame game )
         {
+            _game = game;
+
             PlayerOne = new Player { Id = 1, PlayersSign = Cross };
             PlayerTwo = new Player { Id = 2, PlayersSign = Nought };
 
             StartGameCommand = new RelayCommand( ExecuteStartGame, CanExecuteStartGame );
             DrawSignCommand = new RelayCommand( ExecuteDrawSign, CanExecuteDrawSign );
-            
-            CurrentGame = new Game();
         }
 
 
@@ -64,17 +56,14 @@ namespace MyTicTacToe.ViewModels
                 PlayerTwo.Name = "Computer";
             }
 
-            _currentGameNumber++;
-
-            CurrentGame = new Game(
-                _currentGameNumber,
+            _game.StartGame(
                 PlayerOne,
                 PlayerTwo );
         }
 
         private bool CanExecuteStartGame( object parameter )
         {
-            if( CurrentGame.IsGameInProgress ) 
+            if( _game.IsGameInProgress ) 
             {
                 return false;
             }
@@ -97,12 +86,12 @@ namespace MyTicTacToe.ViewModels
 
         private void ExecuteDrawSign( object parameter )
         {
-            CurrentGame.ExecuteDrawSign( parameter );
+            _game.ExecuteDrawSign( parameter );
         }
 
         private bool CanExecuteDrawSign( object parameter )
         {
-            return CurrentGame.CanExecuteDrawSign( parameter );
+            return _game.CanExecuteDrawSign( parameter );
         }
     }
 }

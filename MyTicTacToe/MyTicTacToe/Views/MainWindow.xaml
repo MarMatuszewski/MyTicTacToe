@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyTicTacToe.ViewModels"
         WindowStartupLocation="CenterScreen"
-        
+
     mc:Ignorable="d"
         Title="TicTac" Height="350" Width="525">
 
@@ -21,9 +20,6 @@
         </Style>
     </Window.Resources>
 
-    <Window.DataContext>
-        <local:MainWindowViewModel />
-    </Window.DataContext>
     <Grid>
         <StackPanel Orientation="Horizontal" >
             <StackPanel Orientation="Vertical" Width="190">
@@ -53,7 +49,7 @@
                 <StackPanel Orientation="Vertical" Margin="0,40">
                     <Button Command="{Binding StartGameCommand}" Name="StartGame" Width="70" Height="20" Content="Start Game!" />
                     <TextBlock Text="Players turn:" TextAlignment="Center" Margin="5" />
-                    <TextBlock Name="PlayerTurn" Text="{Binding CurrentGame.CurrentPlayer.Name, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBlock Name="PlayerTurn" Text="{Binding Game.CurrentPlayer.Name, UpdateSourceTrigger=PropertyChanged}" 
                                TextAlignment="Center" Margin="5" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -63,8 +59,8 @@
                                    TextAlignment="Center" Margin="5" />
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Draw" TextAlignment="Center" Width="60"/>
-                        <TextBlock Text="{Binding PlayerOne.Draws, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Margin="5"/>
+                        <TextBlock Text="Draws" TextAlignment="Center" Width="60"/>
+                        <TextBlock Text="{Binding Game.Draws, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" Margin="5"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding PlayerTwo.Name}" TextAlignment="Center" Width="60"/>
@@ -85,7 +81,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Name="TopLeftCorner" Grid.Column="0" Grid.Row="0" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.TopLeftCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.TopLeftCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -93,7 +89,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="LeftEdge" Grid.Column="0" Grid.Row="1" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.LeftEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.LeftEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -101,7 +97,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="BottomLeftCorner" Grid.Column="0" Grid.Row="2" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.BottomLeftCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.BottomLeftCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -110,7 +106,7 @@
                 </TextBlock>
 
                 <TextBlock Name="TopEdge" Grid.Column="1" Grid.Row="0"
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.TopEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.TopEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -118,7 +114,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="Center" Grid.Column="1" Grid.Row="1" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.Center}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.Center}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -126,7 +122,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="BottomEdge" Grid.Column="1" Grid.Row="2" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.BottomEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.BottomEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -135,7 +131,7 @@
                 </TextBlock>
 
                 <TextBlock Name="TopRightCorner" Grid.Column="2" Grid.Row="0" 
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.TopRightCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.TopRightCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick" 
@@ -143,7 +139,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="RightEdge" Grid.Column="2" Grid.Row="1"       
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.RightEdge}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.RightEdge}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick"
@@ -151,7 +147,7 @@
                     </TextBlock.InputBindings>
                 </TextBlock>
                 <TextBlock Name="BottomRightCorner" Grid.Column="2" Grid.Row="2"        
-                           Style="{StaticResource TextBlockStyle}" Text="{Binding CurrentGame.BottomRightCorner}">
+                           Style="{StaticResource TextBlockStyle}" Text="{Binding Game.BottomRightCorner}">
                     <TextBlock.InputBindings>
                         <MouseBinding Command="{Binding DrawSignCommand}" 
                                       MouseAction="LeftClick"
