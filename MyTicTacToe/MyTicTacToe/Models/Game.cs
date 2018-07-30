@@ -1,9 +1,11 @@
 ﻿using MyTicTacToe.Interfaces;
+using MyTicTacToe.Shared;
 using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System;
 
 namespace MyTicTacToe.Models
 {
@@ -30,6 +32,9 @@ namespace MyTicTacToe.Models
         private string _bottomRightCorner = string.Empty;
 
         private Dictionary<string, List<string>> _possibleWinningLines;
+        private List<string> _gameFields;
+        private List<string> _takenFields;
+        private List<string> _gameFieldsWithTheSameSign;
         private readonly IDisplayService _displayService;
 
         public int Id
@@ -132,6 +137,8 @@ namespace MyTicTacToe.Models
         {
             _displayService = displayService;
 
+            _gameFieldsWithTheSameSign = new List<string>();
+
             _possibleWinningLines = new Dictionary<string, List<string>>
             {
                 { "LeftColumn", new List<string> { "TopLeftCorner", "LeftEdge", "BottomLeftCorner" } },
@@ -147,19 +154,37 @@ namespace MyTicTacToe.Models
 
         public void StartGame( Player playerOne, Player playerTwo )
         {
+            _takenFields = new List<string>();
+
+            _gameFields = new List<string>
+            {
+                "TopLeftCorner",
+                "LeftEdge",
+                "BottomLeftCorner",
+                "TopEdge",
+                "Center",
+                "BottomEdge",
+                "TopRightCorner",
+                "RightEdge",
+                "BottomRightCorner"
+            };
+
             _id++;
             GamePlayerOne = playerOne;
             GamePlayerTwo = playerTwo;
             CurrentPlayer = chooseFirstPlayer();
             IsGameInProgress = true;
+            if( CurrentPlayer.IsComputer )
+            {
+                computerMove();
+            }
         }
 
         public void ExecuteDrawSign( object parameter )
         {
             NumberOfMoves++;
 
-            var property = GetType().GetProperty( parameter.ToString() );
-            property.SetValue( this, CurrentPlayer.PlayersSign );
+            setGameField( parameter.ToString() );
 
             checkForWinner();
         }
@@ -176,12 +201,12 @@ namespace MyTicTacToe.Models
 
         private Player chooseFirstPlayer()
         {
-            if( Id % 2 == 0 )
-            {
+            //if( Id % 2 == 0 )
+            //{
                 return GamePlayerTwo;
-            }
+            //}
 
-            return GamePlayerOne;
+            //return GamePlayerOne;
         }
 
         private void changePlayer()
@@ -189,11 +214,274 @@ namespace MyTicTacToe.Models
             if( CurrentPlayer.Id == 1 )
             {
                 CurrentPlayer = GamePlayerTwo;
+                if ( GamePlayerTwo.IsComputer )
+                {
+                    computerMove();
+                }
             }
             else
             {
                 CurrentPlayer = GamePlayerOne;
             }
+        }
+
+        private void computerMove()
+        {
+            var nextMove = string.Empty;
+
+            NumberOfMoves++;
+            switch ( NumberOfMoves )
+            {
+                case 1:
+                    setGameField( "Center" );
+                    break;
+                case 3:
+                    if ( _gameFields.FindAll( e => e.Contains( "Edge" ) ).Count == 3 )
+                    {
+                        nextMove = placeSignInCornerFurthestFromEdge();
+                    }
+                    else
+                    {
+                        nextMove = placeSignInDiagonalOppositeCorner();
+                    }
+
+                    setGameField( nextMove );
+                    break;
+                case 5:
+                    nextMove = winTheGameIfPossible();
+
+                    if( nextMove.Equals( string.Empty ) )
+                    {
+                        nextMove = blockOponent();
+
+                        if( nextMove.Equals( string.Empty ) )
+                        {
+                            nextMove = placeSignInCornerToSetUpTrap();
+                        }
+                    }
+
+                    setGameField( nextMove );
+                    break;
+                case 7:
+                    nextMove = winTheGameIfPossible();
+
+                    if( nextMove.Equals( string.Empty ) )
+                    {
+                        nextMove = blockOponent();
+
+                        if( nextMove.Equals( string.Empty ) )
+                        {
+                            nextMove = placeSignInEdge();
+                        }
+                    }
+
+                    setGameField( nextMove );
+                    break;
+                default:
+                    setGameField( placeSignInLastFreeField() );
+                    break;
+            }
+
+            checkForWinner();
+        }
+
+        private string placeSignInLastFreeField()
+        {
+            return _gameFields.FirstOrDefault();
+        }
+
+        private string placeSignInEdge()
+        {
+            return _gameFields.FirstOrDefault( f => f.Contains( "Edge" ) );
+        }
+
+        private string placeSignInCornerToSetUpTrap()
+        {
+            var nextField = string.Empty;
+            var possibleLinesToFill = new List<List<string>>();
+            var counter = 0;
+
+            foreach( var valueList in _possibleWinningLines.Values )
+            {
+                foreach( var field in valueList )
+                {
+                    if( GetType().GetProperty( field ).GetValue( this ).Equals( string.Empty ) )
+                    {
+                        counter++;
+                    }
+                }
+
+                if( counter == 2 )
+                {
+                    possibleLinesToFill.Add( valueList );
+                }
+
+                counter = 0;
+            }
+
+            var linesToRemove = possibleLinesToFill.Where( l => l.Any( f => f.Equals( "Center" ) ) ).ToList();
+
+            linesToRemove.Add( possibleLinesToFill.FirstOrDefault(
+                l => l.Any(
+                    f => GetType().GetProperty( f ).GetValue( this ).Equals( GamePlayerOne.PlayersSign ) ) ) );
+
+            foreach( var line in linesToRemove )
+            {
+                possibleLinesToFill.Remove( line );
+            }
+
+            var lineToFill = possibleLinesToFill.FirstOrDefault();
+
+            foreach( var field in lineToFill )
+            {
+                if( GetType().GetProperty( field ).GetValue( this ).Equals( string.Empty )
+                    && field.Contains( "Corner" ) )
+                {
+                    nextField = field;
+                }
+            }
+            return nextField;
+        }
+
+        private string placeSignInDiagonalOppositeCorner()
+        {
+            var counter = 0;
+            var returnList = new List<string>();
+
+            foreach( var valueList in _possibleWinningLines.Values )
+            {
+                foreach( var field in valueList )
+                {
+                    if( GetType().GetProperty( field ).GetValue( this ).Equals( GamePlayerOne.PlayersSign )
+                        || GetType().GetProperty( field ).GetValue( this ).Equals( GamePlayerTwo.PlayersSign ) )
+                    {
+                        counter++;
+                    }
+                }
+
+                if( counter == 2 )
+                {
+                    returnList = valueList;
+                }
+
+                counter = 0;
+            }
+
+            return returnList.FirstOrDefault( f => GetType().GetProperty( f ).GetValue( this ).Equals( string.Empty ) );
+        }
+
+        private string placeSignInCornerFurthestFromEdge()
+        {
+            var lines = _possibleWinningLines.Values
+                         .Where( l => l.All( f => _gameFields.Contains( f ) ) );
+
+            var freeLines = new List<string>();
+            var rowCounter = 0;
+            var columnCounter = 0;
+
+            foreach( var line in lines )
+            {
+                var freeLine = _possibleWinningLines.FindKeyByValue( line );
+
+                if( freeLine.Contains( "Row" ) )
+                {
+                    rowCounter++;
+                }
+                else
+                {
+                    columnCounter++;
+                }
+
+                freeLines.Add( freeLine );
+            }
+
+            var isRow = rowCounter < columnCounter;
+
+            var nextLine = isRow ?
+                freeLines.FirstOrDefault( f => f.Contains( "Row" ) )
+                : freeLines.FirstOrDefault( f => f.Contains( "Column" ) );
+
+            return _possibleWinningLines[ nextLine ].FirstOrDefault( f => f.Contains( "Corner" ) );
+        }
+
+        private string blockOponent()
+        {
+            getAllFieldsContainingPlayersSign( GamePlayerOne );
+
+            var lineWithTwoOponentsFields = _possibleWinningLines.Values.FirstOrDefault( 
+                                                            l => _gameFieldsWithTheSameSign.All(    
+                                                                f1 => l.Any( f2 => f2.Equals( f1 ) ) ) );
+
+            var nextMove = lineWithTwoOponentsFields?.FirstOrDefault(
+                f => GetType().GetProperty( f ).GetValue( this ).Equals( string.Empty ) );
+
+            _gameFieldsWithTheSameSign.Clear();
+
+            if( nextMove != null )
+            {
+                return nextMove;
+            }
+
+            return string.Empty;
+        }
+
+        private string winTheGameIfPossible()
+        {
+            getAllFieldsContainingPlayersSign( GamePlayerTwo );
+
+            var listOfLinesWithWinningPossibility = _possibleWinningLines.FindLineWithTwoSameSigns( _gameFieldsWithTheSameSign );
+
+            var nextMove = string.Empty;
+
+            foreach( var list in listOfLinesWithWinningPossibility )
+            {
+                var emptyLineField = _possibleWinningLines[ list ]
+                    .FirstOrDefault( f => GetType().GetProperty( f ).GetValue( this ).Equals( string.Empty ) );
+
+                _gameFieldsWithTheSameSign.Clear();
+
+                if( emptyLineField != null )
+                {
+                    return emptyLineField;
+                }
+            }
+
+            return string.Empty;
+        }
+
+        private void getAllFieldsContainingPlayersSign( Player player )
+        {
+            foreach( var field in _takenFields )
+            {
+                if( GetType().GetProperty( field ).GetValue( this ).Equals( player.PlayersSign ) )
+                {
+                    if( !_gameFieldsWithTheSameSign.Contains( field ) )
+                    {
+                        _gameFieldsWithTheSameSign.Add( field );
+                    }
+                }
+            }
+        }
+
+
+        private string randomMove()
+        {
+            var randomNumber = new Random();
+
+            var field = randomNumber.Next( 0, _gameFields.Count - 1 );
+
+            return _gameFields[ field ];
+        }
+
+        private void setGameField( string fieldName )
+        {
+            var property = GetType().GetProperty( fieldName );
+            property.SetValue( this, CurrentPlayer.PlayersSign );
+
+            _gameFields.Remove( fieldName );
+            _takenFields.Add( fieldName );
+
+            _gameFieldsWithTheSameSign.Clear();
         }
 
         private void checkForWinner()

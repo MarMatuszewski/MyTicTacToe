@@ -8,6 +8,7 @@ namespace MyTicTacToe.Models
         private int _id;
         private int _numberOfWins;
         private string _playersSign;
+        private bool _isComputer = false;
 
         public string Name
         {
@@ -31,6 +32,12 @@ namespace MyTicTacToe.Models
         {
             get => _playersSign;
             set => _playersSign = value;
+        }
+
+        public bool IsComputer
+        {
+            get => _isComputer;
+            set => _isComputer = value;
         }
     }
 }

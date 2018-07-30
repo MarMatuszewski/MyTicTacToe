@@ -63,6 +63,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Interfaces\IDisplayService.cs" />
+    <Compile Include="Shared\Extensions.cs" />
     <Compile Include="Shared\MessageBoxDisplayService.cs" />
     <Compile Include="StartUp\Bootstrapper.cs" />
     <Compile Include="Commands\RelayCommand.cs" />

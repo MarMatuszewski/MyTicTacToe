@@ -54,6 +54,11 @@ namespace MyTicTacToe.ViewModels
             if( !IsMultiplayerSelected ) 
             {
                 PlayerTwo.Name = "Computer";
+                PlayerTwo.IsComputer = true;
+            }
+            else
+            {
+                PlayerTwo.IsComputer = false;
             }
 
             _game.StartGame(

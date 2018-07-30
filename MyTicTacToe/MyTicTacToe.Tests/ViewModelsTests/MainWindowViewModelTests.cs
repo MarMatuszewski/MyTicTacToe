@@ -117,6 +117,15 @@ namespace MyTicTacToe.Tests.ViewModelTests
         }
 
         [Test]
+        public void PlayerTwo_IsComputer_Should_Be_Set_To_true_When_Game_Is_Started_In_SinglePlayer_Mode()
+        {
+            SUT.IsMultiplayerSelected = false;
+            SUT.StartGameCommand.Execute( null );
+
+            Assert.IsTrue( SUT.PlayerTwo.IsComputer );
+        }
+
+        [Test]
         public void StartGame_Method_Should_Be_Called_Once_When_Game_Is_Started()
         {
             MockGame.ClearReceivedCalls();
