@@ -33,7 +33,7 @@ namespace MyTicTacToe.Models
 
         private Dictionary<string, List<string>> _possibleWinningLines;
         private List<string> _gameFields;
-        private List<string> _takenFields;
+        private Stack<string> _takenFields;
         private List<string> _gameFieldsWithTheSameSign;
         private readonly IDisplayService _displayService;
 
@@ -154,7 +154,7 @@ namespace MyTicTacToe.Models
 
         public void StartGame( Player playerOne, Player playerTwo )
         {
-            _takenFields = new List<string>();
+            _takenFields = new Stack<string>();
 
             _gameFields = new List<string>
             {
@@ -201,12 +201,12 @@ namespace MyTicTacToe.Models
 
         private Player chooseFirstPlayer()
         {
-            //if( Id % 2 == 0 )
-            //{
+            if( Id % 2 == 0 )
+            {
                 return GamePlayerTwo;
-            //}
+            }
 
-            //return GamePlayerOne;
+            return GamePlayerOne;
         }
 
         private void changePlayer()
@@ -235,8 +235,20 @@ namespace MyTicTacToe.Models
                 case 1:
                     setGameField( "Center" );
                     break;
+                case 2:
+                    if( _takenFields.Peek().Contains( "Center" ) )
+                    {
+                        nextMove = _gameFields.FirstOrDefault( f => f.Contains( "Corner" ) );
+                    }
+                    else
+                    {
+                        nextMove = "Center";
+                    }
+
+                    setGameField( nextMove );
+                    break;
                 case 3:
-                    if ( _gameFields.FindAll( e => e.Contains( "Edge" ) ).Count == 3 )
+                    if ( _takenFields.Peek().Contains( "Edge" ) )
                     {
                         nextMove = placeSignInCornerFurthestFromEdge();
                     }
@@ -247,35 +259,57 @@ namespace MyTicTacToe.Models
 
                     setGameField( nextMove );
                     break;
-                case 5:
-                    nextMove = winTheGameIfPossible();
+                case 4:
+                    nextMove = blockOponent();
 
                     if( nextMove.Equals( string.Empty ) )
                     {
-                        nextMove = blockOponent();
+                        getAllFieldsContainingPlayersSign( GamePlayerOne );
 
-                        if( nextMove.Equals( string.Empty ) )
+                        if( _gameFieldsWithTheSameSign.All( f => f.Contains( "Corner" ) ) )
                         {
-                            nextMove = placeSignInCornerToSetUpTrap();
+                            nextMove = placeSignInEdge();
                         }
+                        else if( _gameFieldsWithTheSameSign.All( f => f.Contains( "Edge")))
+                        {
+                            nextMove = placeSignInCorner();
+                        }
+                        else
+                        {
+                            var freeLine = _possibleWinningLines.Values.FirstOrDefault( l => l.All( f => isFieldEmpty( f ) ) );
+                            nextMove = freeLine.FirstOrDefault( f => f.Contains( "Edge" ) );
+                        }
+                    }
+
+                    _gameFieldsWithTheSameSign.Clear();
+
+                    setGameField( nextMove );
+                    break;
+                case 5:
+                    nextMove = winOrBlock();
+
+                    if( nextMove.Equals( string.Empty ) )
+                    {
+                        nextMove = placeSignInCornerToSetUpTrap();
                     }
 
                     setGameField( nextMove );
                     break;
+                case 6:
+                    setGameField( winBlockOrRandomMove() );
+                    break;
                 case 7:
-                    nextMove = winTheGameIfPossible();
+                    nextMove = winOrBlock();
 
                     if( nextMove.Equals( string.Empty ) )
                     {
-                        nextMove = blockOponent();
-
-                        if( nextMove.Equals( string.Empty ) )
-                        {
-                            nextMove = placeSignInEdge();
-                        }
+                        nextMove = placeSignInEdge();
                     }
 
                     setGameField( nextMove );
+                    break;
+                case 8:
+                    setGameField( winBlockOrRandomMove() );
                     break;
                 default:
                     setGameField( placeSignInLastFreeField() );
@@ -283,6 +317,34 @@ namespace MyTicTacToe.Models
             }
 
             checkForWinner();
+        }
+
+        private string winBlockOrRandomMove()
+        {
+            string nextMove = winOrBlock();
+            if( nextMove.Equals( string.Empty ) )
+            {
+                nextMove = randomMove();
+            }
+
+            return nextMove;
+        }
+
+        private string winOrBlock()
+        {
+            var nextMove = winTheGameIfPossible();
+
+            if( nextMove.Equals( string.Empty ) )
+            {
+                nextMove = blockOponent();
+            }
+
+            return nextMove;
+        }
+
+        private string placeSignInCorner()
+        {
+            return _gameFields.FirstOrDefault( f => f.Contains( "Corner" ) );
         }
 
         private string placeSignInLastFreeField()
@@ -301,11 +363,11 @@ namespace MyTicTacToe.Models
             var possibleLinesToFill = new List<List<string>>();
             var counter = 0;
 
-            foreach( var valueList in _possibleWinningLines.Values )
+            foreach( var fieldsList in _possibleWinningLines.Values )
             {
-                foreach( var field in valueList )
+                foreach( var field in fieldsList )
                 {
-                    if( GetType().GetProperty( field ).GetValue( this ).Equals( string.Empty ) )
+                    if( isFieldEmpty( field ) )
                     {
                         counter++;
                     }
@@ -313,33 +375,30 @@ namespace MyTicTacToe.Models
 
                 if( counter == 2 )
                 {
-                    possibleLinesToFill.Add( valueList );
+                    possibleLinesToFill.Add( fieldsList );
                 }
 
                 counter = 0;
             }
 
-            var linesToRemove = possibleLinesToFill.Where( l => l.Any( f => f.Equals( "Center" ) ) ).ToList();
-
-            linesToRemove.Add( possibleLinesToFill.FirstOrDefault(
-                l => l.Any(
-                    f => GetType().GetProperty( f ).GetValue( this ).Equals( GamePlayerOne.PlayersSign ) ) ) );
+            var linesToRemove = possibleLinesToFill.Where( l => l.Any( f => f.Equals( "Center" ) 
+            || GetType().GetProperty( f ).GetValue( this ).Equals( GamePlayerOne.PlayersSign ) ) ).ToList();
 
             foreach( var line in linesToRemove )
             {
                 possibleLinesToFill.Remove( line );
             }
 
-            var lineToFill = possibleLinesToFill.FirstOrDefault();
-
-            foreach( var field in lineToFill )
+            foreach( var field in possibleLinesToFill.FirstOrDefault() )
             {
-                if( GetType().GetProperty( field ).GetValue( this ).Equals( string.Empty )
+                if( isFieldEmpty( field )
                     && field.Contains( "Corner" ) )
                 {
                     nextField = field;
+                    break;
                 }
             }
+
             return nextField;
         }
 
@@ -348,9 +407,9 @@ namespace MyTicTacToe.Models
             var counter = 0;
             var returnList = new List<string>();
 
-            foreach( var valueList in _possibleWinningLines.Values )
+            foreach( var fieldsList in _possibleWinningLines.Values )
             {
-                foreach( var field in valueList )
+                foreach( var field in fieldsList )
                 {
                     if( GetType().GetProperty( field ).GetValue( this ).Equals( GamePlayerOne.PlayersSign )
                         || GetType().GetProperty( field ).GetValue( this ).Equals( GamePlayerTwo.PlayersSign ) )
@@ -361,13 +420,13 @@ namespace MyTicTacToe.Models
 
                 if( counter == 2 )
                 {
-                    returnList = valueList;
+                    returnList = fieldsList;
                 }
 
                 counter = 0;
             }
 
-            return returnList.FirstOrDefault( f => GetType().GetProperty( f ).GetValue( this ).Equals( string.Empty ) );
+            return returnList.FirstOrDefault( f => isFieldEmpty( f ) );
         }
 
         private string placeSignInCornerFurthestFromEdge()
@@ -406,23 +465,30 @@ namespace MyTicTacToe.Models
 
         private string blockOponent()
         {
+            var nextField = string.Empty;
+
             getAllFieldsContainingPlayersSign( GamePlayerOne );
 
-            var lineWithTwoOponentsFields = _possibleWinningLines.Values.FirstOrDefault( 
-                                                            l => _gameFieldsWithTheSameSign.All(    
-                                                                f1 => l.Any( f2 => f2.Equals( f1 ) ) ) );
+            var linesWithTwoOponentsFields = _possibleWinningLines.FindLineWithTwoSameSigns( _gameFieldsWithTheSameSign );
 
-            var nextMove = lineWithTwoOponentsFields?.FirstOrDefault(
-                f => GetType().GetProperty( f ).GetValue( this ).Equals( string.Empty ) );
+            foreach( var line in linesWithTwoOponentsFields )
+            {
+                if( _possibleWinningLines[ line ].Any( f => isFieldEmpty( f ) ) )
+                {
+                    nextField = _possibleWinningLines[ line ].FirstOrDefault(
+                       f => isFieldEmpty( f ) );
+                    break;
+                }
+            }
 
             _gameFieldsWithTheSameSign.Clear();
 
-            if( nextMove != null )
-            {
-                return nextMove;
-            }
+            return nextField;
+        }
 
-            return string.Empty;
+        private bool isFieldEmpty( string fieldName )
+        {
+            return GetType().GetProperty( fieldName ).GetValue( this ).Equals( string.Empty );
         }
 
         private string winTheGameIfPossible()
@@ -436,7 +502,7 @@ namespace MyTicTacToe.Models
             foreach( var list in listOfLinesWithWinningPossibility )
             {
                 var emptyLineField = _possibleWinningLines[ list ]
-                    .FirstOrDefault( f => GetType().GetProperty( f ).GetValue( this ).Equals( string.Empty ) );
+                    .FirstOrDefault( f => isFieldEmpty( f ) );
 
                 _gameFieldsWithTheSameSign.Clear();
 
@@ -446,7 +512,7 @@ namespace MyTicTacToe.Models
                 }
             }
 
-            return string.Empty;
+            return nextMove;
         }
 
         private void getAllFieldsContainingPlayersSign( Player player )
@@ -479,7 +545,7 @@ namespace MyTicTacToe.Models
             property.SetValue( this, CurrentPlayer.PlayersSign );
 
             _gameFields.Remove( fieldName );
-            _takenFields.Add( fieldName );
+            _takenFields.Push( fieldName );
 
             _gameFieldsWithTheSameSign.Clear();
         }
